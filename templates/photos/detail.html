@@ -1,0 +1,7 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <p>{{ photo.pk }}번 사진 보여줄게요</p>
+    <p>주소는 {{ photo.image.url }}</p>
+    <p><img src="{{ photo.image.url }}"/></p>
+{% endblock %}
