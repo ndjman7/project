@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.conf import settings
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Photo
+from .forms import PhotoForm
 
 
 def detail(request, photo_id):
@@ -11,3 +13,44 @@ def detail(request, photo_id):
     #     'photo': photo
     # }
     return render(request, 'photos/detail.html', context)
+
+
+def create(request):
+    if not request.user.is_authenticated:
+        return redirect(settings.LOGIN_URL)
+
+    if request.method == 'GET':
+        form = PhotoForm()
+    elif request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.user = request.user
+            photo.save()
+            return redirect('photos:detail', photo_id=photo.pk)
+
+    context = {
+        'photo_form': form
+    }
+    return render(request, 'photos/edit.html', context)
+
+
+def index(request):
+    photos = Photo.objects.all().order_by('-pk')
+    context = dict()
+    context['photos'] = photos
+
+    return render(request, 'photos/list.html', context)
+
+
+def delete(request):
+    # 1. POST 요청으로 온 PK값을 받아서 Photo 모델이 맞는지 찾는다.
+    if request.method == 'POST':
+        photo_id = request.POST['photo_id']
+        try:
+            photo = Photo.objects.get(pk=photo_id, user=request.user)
+        except:
+            return redirect('photos:detail', pk=photo_id)
+        photo.delete()
+    return redirect('photos:list')

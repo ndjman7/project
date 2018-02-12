@@ -1,5 +1,6 @@
 created by https://www.gitignore.io/api/vim,macos,linux,python,django,angular,pycharm
 uploads/
+static_root/
 
 ### Angular ###
 ## Angular ##
