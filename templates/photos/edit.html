@@ -1,14 +1,15 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<p>{{ request.user.username }}님 환영합니다.</p>
 
-<form method="POST" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ photo_form.as_p }}
-    <p>
-        <button type="submit">저장</button>
-    </p>
-</form>
+    <div class="container">
+        <form method="POST" action="" class="form-group" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ photo_form.as_p }}
+            <p>
+                <button class="btn btn-default btn-block" type="submit">저장</button>
+            </p>
+        </form>
+    </div>
 
 {% endblock %}

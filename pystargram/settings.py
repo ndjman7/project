@@ -130,5 +130,5 @@ MEDIA_URL = '/upload_files/'
 MEDIA_ROOT = BASE_DIR
 
 
-LOGIN_REDIRECT_URL = '/photos/'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login'

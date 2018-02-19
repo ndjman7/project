@@ -2,16 +2,20 @@
 
 {% block content %}
 
-{% if request.user.is_authenticated %}
-<a href="{% url 'photos:create' %}">사진 올리기</a>
-{% endif %}
+
 
 <div class="container">
     <div class="row">
+        <div class="">
+            {% if request.user.is_authenticated %}
+                <a class="btn btn-default" role="button" href="{% url 'photos:create' %}">사진 올리기</a>
+            {% endif %}
+        </div>
+
         {% for photo in photos %}
         <div class="col-md-4">
             <a href="{% url 'photos:detail' photo_id=photo.pk %}">
-                <img src="{{ photo.image.url }}" style="width:250px; height:200px;">
+                <img src="{{ photo.image.url }}"  class="img-thumbnail img-responsive">
             </a>
         </div>
         {% endfor %}

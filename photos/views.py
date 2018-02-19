@@ -9,9 +9,6 @@ def detail(request, photo_id):
     context = dict()
     context['photo'] = photo
 
-    # context = {
-    #     'photo': photo
-    # }
     return render(request, 'photos/detail.html', context)
 
 
@@ -23,7 +20,6 @@ def create(request):
         form = PhotoForm()
     elif request.method == 'POST':
         form = PhotoForm(request.POST, request.FILES)
-
         if form.is_valid():
             photo = form.save(commit=False)
             photo.user = request.user
@@ -45,12 +41,14 @@ def index(request):
 
 
 def delete(request):
-    # 1. POST 요청으로 온 PK값을 받아서 Photo 모델이 맞는지 찾는다.
+    if not request.user.is_authenticated:
+        return redirect(request.META.get('HTTP_REFERER', 'photos:list'))
+
     if request.method == 'POST':
         photo_id = request.POST['photo_id']
         try:
             photo = Photo.objects.get(pk=photo_id, user=request.user)
-        except:
+        except Photo.DoesNotExist:
             return redirect('photos:detail', pk=photo_id)
         photo.delete()
     return redirect('photos:list')
