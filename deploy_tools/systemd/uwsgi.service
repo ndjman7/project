@@ -4,8 +4,7 @@ After=syslog.target
 
 [Service]
 ExecPre=/bin/sh -c 'mkdir -p /run/uwsgi; chown web:web /run/uwsgi'
-ExecStart=/home/ubuntu/venv/bin/uwsgi --uid web --gid web --master\
-          --emperor /etc/uwsgi/sites 
+ExecStart=/home/ubuntu/venv/bin/uwsgi --uid web --gid web --master --emperor /etc/uwsgi/sites 
 Restart=always
 KillSignal=SIGQUIT
 Type=notify
